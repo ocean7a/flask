@@ -3,7 +3,7 @@ pipeline {
         registry = 'ocean7a/flask_app'
         registryCredentials = 'docker'
         cluster_name = 'skillstorm'
-        naspace = 'ocean7a'
+        namespace = 'ocean7a'
             }
   agent {
     node {
@@ -34,7 +34,7 @@ stage('Deploy Stage') {
         }
 stage('Kubernetes') {
   steps {
-    withCredentials([aws(accesKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsID:'AWS_SECRET_ACCESS_KEY')]) {
+    withCredentials([aws(accesKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsID:'AWS', secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
       sh "aws eks update-kubeconfig --region us-east-1 --name ${cluster_name}"
       script {
         try{
@@ -48,4 +48,6 @@ stage('Kubernetes') {
       }
     }
   }
+}
+}
 }
